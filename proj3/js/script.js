@@ -3,7 +3,12 @@ document.getElementById('name').focus();
 
 //showing a text field when 'other' is selected
 $('#title').change(function() {
+	const input = document.createElement('input');
 	if ($(this).val() === 'other') {
-		console.log('this is other');
+		$(input).attr('id', 'other-title');
+		$(input).attr('placeholder', 'Your Job Role');
+		$(this).after(input);
+	} else {
+		$("#other-title").hide();
 	}
 });
