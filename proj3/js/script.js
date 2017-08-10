@@ -3,25 +3,18 @@ document.getElementById('name').focus();
 
 //when the select option is changed 
 $('#title').change(function() {
-<<<<<<< HEAD
+	//create input element
+	const input = document.createElement('input');
 	//if option selected has value of 'other'
 	if ($(this).val() === 'other') {
-		//create input element
-		const input = document.createElement('input');
-		//set appropriate id and placeholder attribute
+		//set input tags values for 'id' and 'placeholder'
 		$(input).attr('id', 'other-title');
 		$(input).attr('placeholder', 'Your Job Role');
-		//insert input element after the dropdown menu
-		$('#title').after(input);
-=======
-	const input = document.createElement('input');
-	if ($(this).val() === 'other') {
-		$(input).attr('id', 'other-title');
-		$(input).attr('placeholder', 'Your Job Role');
+		//add created input element after 'select' element
 		$(this).after(input);
 	} else {
+		//toggle input element depending on whether it's selected or not
 		$("#other-title").hide();
->>>>>>> origin/master
 	}
 });
 
