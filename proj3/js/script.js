@@ -48,13 +48,19 @@ $('#design').change(function () {
 
 /* when checkbox is engaged, this function disables other inputs checkboxes
 when there is an overlap in time with the selected checkbox
-and enables that same checkbox when the input is unselected */
+and enables that same checkbox when the input is unselected.
+This section is also to create a new div that calculates the total cost.
+When a checkbox is clicked, the cost is added and when it is unchecked
+the cost is subtracted from the total, which is declared outside the function*/
+let html = '<div><h2 id="total">Total: $0</h2></div>'
+$('.activities').append(html);
 let total = 0;
-let html = '<div><h2>Total: $';
 $('input[type="checkbox"]').change(function(){
+	$('#total').html('Total: $' + total);
 	if($(this).is(':checked') && $(this).attr('name') === 'all') {
 		total += 200;
-	} else if(!$(this).is(':checked') && $(this).attr('name') === 'all') {
+	}
+	if(!$(this).is(':checked') && $(this).attr('name') === 'all') {
 		total = total - 200;
 	}
 
@@ -96,18 +102,19 @@ $('input[type="checkbox"]').change(function(){
 
 	if($(this).is(':checked') && $(this).attr('name') === 'build-tools') {
 		total += 100;
-	} else if(!$(this).is(':checked') && $(this).attr('name') === 'build-tools') {
+	}
+	if(!$(this).is(':checked') && $(this).attr('name') === 'build-tools') {
 		total = total - 100;
 	}
 
 	if($(this).is(':checked') && $(this).attr('name') === 'npm') {
 		total += 100;
-	} else if(!$(this).is(':checked') && $(this).attr('name') === 'npm') {
+	}
+	if(!$(this).is(':checked') && $(this).attr('name') === 'npm') {
 		total = total - 100;
 	}
-	html += total;
-	
+	$('#total').html('Total: $' + total);
 });
-$('.activities').append(html + '</h2></div>');
+
 
 
