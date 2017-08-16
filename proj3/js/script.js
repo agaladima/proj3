@@ -115,12 +115,16 @@ $('input[type="checkbox"]').change(function(){
 	}
 	$('#total').html('Total: $' + total);
 });
+//when the page loads, set the credit card selection for payment section as default
+$('#payment option[value="credit card"]').prop('selected', true)
+if ($('#payment').val() === 'credit card') {
+		$('#credit-card').show();
+		$('fieldset div:nth-last-child(2)').hide();
+		$('fieldset div:last-child').hide();
+}
 
+//when the payment section is changed, the appropriate payment option is reflected
 $('#payment').change(function() {
-	$('#credit-card').hide();
-	$('fieldset div:nth-last-child(2)').hide();
-	$('fieldset div:last-child').hide();
-
 	if ($(this).val() === 'credit card') {
 		$('#credit-card').show();
 		$('fieldset div:nth-last-child(2)').hide();
@@ -136,10 +140,40 @@ $('#payment').change(function() {
 	}
 });
 
-$('form').submit(function () {
-	//name, email, checkbox, cc, zip, cvv
-	if ($('#name').text() === '') {
-		console.log('clicked');
+function errorName() {
+
+}
+
+function errorEmail() {
+	
+}
+
+function errorCheckbox() {
+	
+}
+
+function errorCreditCard() {
+	
+}
+
+function errorZip() {
+	
+}
+
+function errorCVV() {
+	
+}
+
+$('button').on('click', function () {
+	if ($('#name').val().length === 0) {
 		$('#name').css("border", "5px solid red");
+		$(this).prop('disabled', true);
 	}
 });
+$('button').on('click', function () {
+	if ($('#name').val().length > 0) {
+		$('#name').css('border', '');
+		$('button').prop('disabled', false);
+	}
+});
+
