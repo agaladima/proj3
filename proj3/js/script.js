@@ -116,5 +116,30 @@ $('input[type="checkbox"]').change(function(){
 	$('#total').html('Total: $' + total);
 });
 
+$('#payment').change(function() {
+	$('#credit-card').hide();
+	$('fieldset div:nth-last-child(2)').hide();
+	$('fieldset div:last-child').hide();
 
+	if ($(this).val() === 'credit card') {
+		$('#credit-card').show();
+		$('fieldset div:nth-last-child(2)').hide();
+		$('fieldset div:last-child').hide();
+	} else if ($(this).val() === 'paypal') {
+		$('fieldset div:nth-last-child(2)').show();
+		$('#credit-card').hide();
+		$('fieldset div:last-child').hide();
+	} else if ($(this).val() === 'bitcoin') {
+		$('fieldset div:last-child').show();
+		$('#credit-card').hide();
+		$('fieldset div:nth-last-child(2)').hide();
+	}
+});
 
+$('form').submit(function () {
+	//name, email, checkbox, cc, zip, cvv
+	if ($('#name').text() === '') {
+		console.log('clicked');
+		$('#name').css("border", "5px solid red");
+	}
+});
