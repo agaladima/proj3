@@ -52,7 +52,7 @@ and enables that same checkbox when the input is unselected.
 This section is also to create a new div that calculates the total cost.
 When a checkbox is clicked, the cost is added and when it is unchecked
 the cost is subtracted from the total, which is declared outside the function*/
-let html = '<div><h2 id="total">Total: $0</h2></div>'
+let html = '<div><h2 id="total">Total: $0</h2></div>';
 $('.activities').append(html);
 let total = 0;
 $('input[type="checkbox"]').change(function(){
@@ -116,27 +116,27 @@ $('input[type="checkbox"]').change(function(){
 	$('#total').html('Total: $' + total);
 });
 //when the page loads, set the credit card selection for payment section as default
-$('#payment option[value="credit card"]').prop('selected', true)
+$('#payment option[value="credit card"]').prop('selected', true);
 if ($('#payment').val() === 'credit card') {
 		$('#credit-card').show();
-		$('fieldset div:nth-last-child(2)').hide();
-		$('fieldset div:last-child').hide();
+		$('div p:nth-last-child(2)').hide();
+		$('div p:last-child').hide();
 }
 
 //when the payment section is changed, the appropriate payment option is reflected
 $('#payment').change(function() {
 	if ($(this).val() === 'credit card') {
 		$('#credit-card').show();
-		$('fieldset div:nth-last-child(2)').hide();
-		$('fieldset div:last-child').hide();
+		$('#paypal').hide();
+		$('#bitcoin').hide();
 	} else if ($(this).val() === 'paypal') {
-		$('fieldset div:nth-last-child(2)').show();
+		$('#paypal').show();
 		$('#credit-card').hide();
-		$('fieldset div:last-child').hide();
+		$('#bitcoin').hide();
 	} else if ($(this).val() === 'bitcoin') {
-		$('fieldset div:last-child').show();
+		$('#bitcoin').show();
 		$('#credit-card').hide();
-		$('fieldset div:nth-last-child(2)').hide();
+		$('#paypal').hide();
 	}
 });
 
@@ -167,13 +167,7 @@ function errorCVV() {
 $('button').on('click', function () {
 	if ($('#name').val().length === 0) {
 		$('#name').css("border", "5px solid red");
-		$(this).prop('disabled', true);
-	}
-});
-$('button').on('click', function () {
-	if ($('#name').val().length > 0) {
-		$('#name').css('border', '');
 		$('button').prop('disabled', false);
-	}
+	} 
 });
 
