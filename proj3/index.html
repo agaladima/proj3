@@ -59,7 +59,7 @@
           </select>
         </div>
 
-        <div id="colors-js-puns" class="">
+        <div id="colors-js-puns" class="dColor">
           <label for="color">Color:</label>
           <select id="color">
             <option value="cornflowerblue">Cornflower Blue (JS Puns shirt only)</option>
@@ -101,12 +101,12 @@
         	  <input id="cc-num" name="user_cc-num" type="text">
           </div>
 
-          <div class="col-3 col">
+          <div class="col-3 col" oninput="errorZip()">
             <label for="zip">Zip Code:</label>
             <input id="zip" name="user_zip" type="text"> 
           </div>
 
-          <div class="col-3 col">
+          <div class="col-3 col" oninput="errorCVV()">
             <label for="cvv">CVV:</label>
             <input id="cvv" name="user_cvv" type="text"> 
           </div>

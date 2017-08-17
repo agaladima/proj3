@@ -19,9 +19,12 @@ $('#title').change(function() {
 	}
 });
 
+//hide shirt colors until design is selected
+$('.dColor').hide();
 //when the design is changed
 $('#design').change(function () {
 	//hide all options
+	$('.dColor').show();
 	$('#color').children('option').hide();
 	/* if the options are changed, it will toggle the color
 	sections to reveal the corresponding options there */
@@ -141,33 +144,108 @@ $('#payment').change(function() {
 });
 
 function errorName() {
+	if ($('#name').val().length === 0) {
+		$('#name').css("border", "5px solid tomato");
+		return false;
+	} else {
+		$('#name').removeAttr('style');
+		return true;
+	}
+}
 
+function validateEmail(email) {
+  var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(email);
 }
 
 function errorEmail() {
-	
+	var email = $('#mail').val();
+	if(validateEmail(email)) {
+		$('#mail').removeAttr('style');
+		return true;
+	} else {
+		$('#mail').css("border", "5px solid tomato");
+		return false;
+	}
 }
 
 function errorCheckbox() {
-	
+	if ($(".activities input:checkbox:checked").length > 0) {
+		$('.activities').removeAttr('style');
+		return true;
+	} else {
+		$('.activities').css("border", "5px solid tomato");
+		return false;
+	}
 }
 
 function errorCreditCard() {
-	
+	var ccNum = $('#cc-num').val();
+	if (ccNum.length > 12 && ccNum.length < 17 && /^\d+$/.test(ccNum)) {
+		$('#cc-num').removeAttr('style');
+		return true;
+	} else if (ccNum.length > 16 || ccNum.length < 12 && ccNum.length > 0 && /^\d+$/.test(ccNum)) {
+		alert('Oops! Looks like you have '+ ccNum.length + ' digits for the Credit Card section when you need between 13 and 16.');
+		$('#cc-num').css("border", "5px solid tomato");
+		return false;
+	} else if (/^\d+$/.test(ccNum) === false && ccNum.length != 0) {
+		alert('Oops! Looks like you have letters in there! Only numbers please.');
+		$('#cc-num').css("border", "5px solid tomato");
+		return false;
+	} else {
+		alert('Oops! Looks like you did\'t enter any numbers in the Credit Card section.')
+		$('#cc-num').css("border", "5px solid tomato");
+		return false;
+	}
 }
 
 function errorZip() {
-	
+	var zip = $('#zip').val();
+	if (zip.length === 5 && /^\d+$/.test(zip)) {
+		$('#zip').removeAttr('style');
+		return true;
+	} else {
+		$('#zip').css("border", "5px solid tomato");
+		return false;
+	}
+	//real time validation of zip
+	if (zip.length < 5) {
+		var lengthTG = 5 - zip.length;
+		var html = document.createElement('P');
+		var text = document.createTextNode('Please enter '+lengthTG+' more digits.');
+		html.appendChild(text);
+		document.getElementById('zip').appendChild();
+		$('input #zip').append(html);
+	} else if (zip.length === 5) {
+		//$('').hide();
+	}
 }
 
 function errorCVV() {
-	
+	var cvv = $('#cvv').val();
+	if (cvv.length === 3 && /^\d+$/.test(cvv)) {
+		$('#cvv').removeAttr('style');
+		return true;
+	} else {
+		$('#cvv').css("border", "5px solid tomato");
+		return false;
+	}
 }
 
 $('button').on('click', function () {
-	if ($('#name').val().length === 0) {
-		$('#name').css("border", "5px solid red");
-		$('button').prop('disabled', false);
-	} 
-});
+	errorName();
+	errorEmail();
+	errorCheckbox();
+	errorCreditCard();
+	errorZip();
+	errorCVV();
 
+	if(errorName() === false || errorEmail() === false || errorCheckbox() === false ||
+		errorCreditCard() === false || errorZip() === false || errorCVV() === false) {
+		// add some html at the top that focuses on the the title saying there's a mistake
+		alert('Please fix the fields outlined in red!');
+		return false;
+	} else {
+		return true;
+	}
+});
