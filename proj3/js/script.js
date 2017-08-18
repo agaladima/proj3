@@ -142,7 +142,8 @@ $('#payment').change(function() {
 		$('#paypal').hide();
 	}
 });
-
+//this checks to see if the name field is empty. if it isn't empty, true is returned
+// and all style attributes are removed. if not, false is returned and it's given an error style
 function errorName() {
 	if ($('#name').val().length === 0) {
 		$('#name').css("border", "5px solid tomato");
@@ -152,14 +153,15 @@ function errorName() {
 		return true;
 	}
 }
-
+//this looks at the format of an email and whether it's valid or not
 function validateEmail(email) {
-  var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return re.test(email);
 }
-
+////this checks to see if the email is valid. if it is true is returned
+// and all style attributes are removed. if not, false is returned and it's given an error style
 function errorEmail() {
-	var email = $('#mail').val();
+	let email = $('#mail').val();
 	if(validateEmail(email)) {
 		$('#mail').removeAttr('style');
 		return true;
@@ -168,7 +170,8 @@ function errorEmail() {
 		return false;
 	}
 }
-
+////this checks to see if at least one checkbox is selected. if it is true is returned
+// and all style attributes are removed. if not, false is returned and it's given an error style
 function errorCheckbox() {
 	if ($(".activities input:checkbox:checked").length > 0) {
 		$('.activities').removeAttr('style');
@@ -178,52 +181,58 @@ function errorCheckbox() {
 		return false;
 	}
 }
-
+//this checks to see if the cc number is between 13 and 16 digits and only numnbers. if it is true is returned
+// and all style attributes are removed. if not, false is returned and it's given an error style
 function errorCreditCard() {
-	var ccNum = $('#cc-num').val();
-	if (ccNum.length > 12 && ccNum.length < 17 && /^\d+$/.test(ccNum)) {
+	let ccNum = $('#cc-num').val();
+	if ($('#payment option:selected').val() === 'credit card' && ccNum.length > 12 && ccNum.length < 17 && /^\d+$/.test(ccNum)) {
 		$('#cc-num').removeAttr('style');
 		return true;
-	} else if (ccNum.length > 16 || ccNum.length < 12 && ccNum.length > 0 && /^\d+$/.test(ccNum)) {
+	} else if ($('#payment option:selected').val() === 'credit card' && ccNum.length > 16 || ccNum.length < 12 && ccNum.length > 0 && /^\d+$/.test(ccNum)) {
 		alert('Oops! Looks like you have '+ ccNum.length + ' digits for the Credit Card section when you need between 13 and 16.');
 		$('#cc-num').css("border", "5px solid tomato");
 		return false;
-	} else if (/^\d+$/.test(ccNum) === false && ccNum.length != 0) {
+	} else if ($('#payment option:selected').val() === 'credit card' && /^\d+$/.test(ccNum) === false && ccNum.length != 0) {
 		alert('Oops! Looks like you have letters in there! Only numbers please.');
 		$('#cc-num').css("border", "5px solid tomato");
 		return false;
 	} else {
-		alert('Oops! Looks like you did\'t enter any numbers in the Credit Card section.')
+		alert('Oops! Looks like you didn\'t enter any numbers in the Credit Card section.')
 		$('#cc-num').css("border", "5px solid tomato");
 		return false;
 	}
 }
+//this checks to see if the zip is only 5 digits and only numnbers. if it is true is returned
+// and all style attributes are removed. if not, false is returned and it's given an error style
+//this also sets a real time message that lets the user how many more characters are needed for zip code
+let zipL = 0;
+let zhtml = '<p id="zipID">You need 5 more digits...</p>';
+$('#zip').parent().prepend(zhtml);
+$('#zipID').hide();
 
 function errorZip() {
-	var zip = $('#zip').val();
-	if (zip.length === 5 && /^\d+$/.test(zip)) {
+	let zip = $('#zip').val();
+	if ($('#payment option:selected').val() === 'credit card' && zip.length === 5 && /^\d+$/.test(zip)) {
 		$('#zip').removeAttr('style');
+		$('#zipID').hide();
 		return true;
 	} else {
 		$('#zip').css("border", "5px solid tomato");
+		console.log('only numbers');
+		let div = document.createElement('div');
+		div.id = 'real-time';
+		let zipLen = zip.length;
+		zipL = 5 - zipLen;
+		$('#zipID').show();
+		$('#zipID').html('You need ' + zipL + ' more digits...');
 		return false;
 	}
-	//real time validation of zip
-	if (zip.length < 5) {
-		var lengthTG = 5 - zip.length;
-		var html = document.createElement('P');
-		var text = document.createTextNode('Please enter '+lengthTG+' more digits.');
-		html.appendChild(text);
-		document.getElementById('zip').appendChild();
-		$('input #zip').append(html);
-	} else if (zip.length === 5) {
-		//$('').hide();
-	}
 }
-
+//this checks to see if the CVV is only three digits and only numnbers. if it is true is returned
+// and all style attributes are removed. if not, false is returned and it's given an error style
 function errorCVV() {
-	var cvv = $('#cvv').val();
-	if (cvv.length === 3 && /^\d+$/.test(cvv)) {
+	let cvv = $('#cvv').val();
+	if ($('#payment option:selected').val() === 'credit card' && cvv.length === 3 && /^\d+$/.test(cvv)) {
 		$('#cvv').removeAttr('style');
 		return true;
 	} else {
@@ -231,15 +240,18 @@ function errorCVV() {
 		return false;
 	}
 }
-
+//when the button is clicked, the functions are called and executed
 $('button').on('click', function () {
 	errorName();
 	errorEmail();
 	errorCheckbox();
-	errorCreditCard();
-	errorZip();
-	errorCVV();
-
+	//if the credit card option is selected then it executes the credit card related functions
+	if ($('#payment option:selected').val() === 'credit card') {
+		errorCreditCard();
+		errorZip();
+		errorCVV();
+	}
+	//if the error functions return true, don't submit. If they return true then submit the form
 	if(errorName() === false || errorEmail() === false || errorCheckbox() === false ||
 		errorCreditCard() === false || errorZip() === false || errorCVV() === false) {
 		// add some html at the top that focuses on the the title saying there's a mistake
