@@ -181,19 +181,27 @@ function errorCheckbox() {
 
 function errorCreditCard() {
 	var ccNum = $('#cc-num').val();
-	if (ccNum.length > 12 && ccNum.length < 17 && /^\d+$/.test(ccNum)) {
+	if ($('#payment option:selected').val() === 'credit card' && ccNum.length > 12 && ccNum.length < 17 && /^\d+$/.test(ccNum)
+			|| $('#payment option:selected').val() === 'paypal' || $('#payment option:selected').val() === 'bitcoin') {
 		$('#cc-num').removeAttr('style');
+		$('#cc-error').remove();
 		return true;
-	} else if (ccNum.length > 16 || ccNum.length < 12 && ccNum.length > 0 && /^\d+$/.test(ccNum)) {
-		alert('Oops! Looks like you have '+ ccNum.length + ' digits for the Credit Card section when you need between 13 and 16.');
+	} else if ($('#payment option:selected').val() === 'credit card' && ccNum.length > 16 || ccNum.length < 12 && ccNum.length > 0 && /^\d+$/.test(ccNum)) {
+		$('#exp-year').after('<p id="cc-error"></p>');
+		$('#cc-error').html('**Oops! Looks like you have '+ ccNum.length + ' digits for the Credit Card section when you need between 13 and 16.');
+		$('#cc-error').css('color', 'tomato');
 		$('#cc-num').css("border", "5px solid tomato");
 		return false;
-	} else if (/^\d+$/.test(ccNum) === false && ccNum.length != 0) {
-		alert('Oops! Looks like you have letters in there! Only numbers please.');
+	} else if ($('#payment option:selected').val() === 'credit card' && /^\d+$/.test(ccNum) === false && ccNum.length != 0) {
+		$('#exp-year').after('<p id="cc-error"></p>');
+		$('#cc-error').html('**Oops! Looks like you have letters in there! Only numbers please.');
+		$('#cc-error').css('color', 'tomato');
 		$('#cc-num').css("border", "5px solid tomato");
 		return false;
 	} else {
-		alert('Oops! Looks like you did\'t enter any numbers in the Credit Card section.')
+		$('#exp-year').after('<p id="cc-error"></p>');
+		$('#cc-error').html('**Oops! Looks like you don\'t have a cc number entered!');
+		$('#cc-error').css('color', 'tomato');
 		$('#cc-num').css("border", "5px solid tomato");
 		return false;
 	}
@@ -201,7 +209,8 @@ function errorCreditCard() {
 
 function errorZip() {
 	var zip = $('#zip').val();
-	if (zip.length === 5 && /^\d+$/.test(zip)) {
+	if ($('#payment option:selected').val() === 'credit card' && zip.length === 5 && /^\d+$/.test(zip)
+			|| $('#payment option:selected').val() === 'paypal' || $('#payment option:selected').val() === 'bitcoin') {
 		$('#zip').removeAttr('style');
 		return true;
 	} else {
@@ -223,7 +232,8 @@ function errorZip() {
 
 function errorCVV() {
 	var cvv = $('#cvv').val();
-	if (cvv.length === 3 && /^\d+$/.test(cvv)) {
+	if ($('#payment option:selected').val() === 'credit card' && cvv.length === 3 && /^\d+$/.test(cvv)
+			|| $('#payment option:selected').val() === 'paypal' || $('#payment option:selected').val() === 'bitcoin') {
 		$('#cvv').removeAttr('style');
 		return true;
 	} else {
